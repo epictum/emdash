@@ -6,14 +6,11 @@
 	// disable_nodejs_process_v2 needed until unenv fix lands in Pages
 	// See: https://github.com/withastro/astro/issues/14511
 	"compatibility_flags": ["nodejs_compat", "disable_nodejs_process_v2"],
-	// Native Workers Caching (edge HTML in front of the Worker). No zone ID or
-	// Cache Purge API token. Pair with cacheCloudflare() in astro.config.mjs.
-	// Purge from the Worker with cache.purge() from cloudflare:workers.
-	"cache": {
-		"enabled": true,
-	},
 	// Test site: served on workers.dev only (no custom domain)
 	"workers_dev": true,
+	"vars": {
+		"EMDASH_SITE_URL": "https://emdash-test.michael-a46.workers.dev",
+	},
 	// D1 Database binding
 	"d1_databases": [
 		{
@@ -36,10 +33,6 @@
 	"observability": {
 		"enabled": true,
 	},
-	// Worker Loader for plugin sandboxing
-	"worker_loaders": [
-		{
-			"binding": "LOADER",
-		},
-	],
+	// Sandboxed plugins need Worker Loader (Workers Paid plan). Uncomment after upgrading:
+	// "worker_loaders": [{ "binding": "LOADER" }],
 }
