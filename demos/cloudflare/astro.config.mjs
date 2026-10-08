@@ -1,10 +1,8 @@
 // @ts-check
 import cloudflare from "@astrojs/cloudflare";
-import { cacheCloudflare } from "@astrojs/cloudflare/cache";
 import react from "@astrojs/react";
-import { d1, r2, sandbox } from "@emdash-cms/cloudflare";
+import { d1, r2 } from "@emdash-cms/cloudflare";
 import { formsPlugin } from "@emdash-cms/plugin-forms";
-import webhookNotifier from "@emdash-cms/plugin-webhook-notifier";
 import { defineConfig, fontProviders } from "astro/config";
 import emdash from "emdash/astro";
 
@@ -41,31 +39,11 @@ export default defineConfig({
 				// Test plugin that exercises all v2 APIs
 				formsPlugin(),
 			],
-			// Sandboxed plugins (run in isolated workers)
-			sandboxed: [webhookNotifier],
-			// Sandbox runner for Cloudflare
-			sandboxRunner: sandbox(),
+			// Sandboxed plugins need Worker Loader (Workers Paid plan); disabled on the test site
 			// Plugin marketplace
 			marketplace: "https://marketplace.emdashcms.com",
 		}),
 	],
-	// Preferred edge HTML cache: native Workers Caching via the Astro Cloudflare
-	// adapter. Pair with `"cache": { "enabled": true }` in wrangler.jsonc (the
-	// adapter also injects that when this provider is detected). Invalidation is
-	// `cache.purge()` from cloudflare:workers — no CF_ZONE_ID / API token.
-	cache: {
-		provider: cacheCloudflare(),
-	},
-	routeRules: {
-		"/": {
-			maxAge: 3_600,
-			swr: 864_000,
-		},
-		"/[...slug]": {
-			maxAge: 3_600,
-			swr: 864_000,
-		},
-	},
 	fonts: [
 		{
 			provider: fontProviders.google(),
