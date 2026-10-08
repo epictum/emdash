@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "emdash-demo",
+	"name": "emdash-test",
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-01-14",
 	// disable_nodejs_process_v2 needed until unenv fix lands in Pages
@@ -12,26 +12,20 @@
 	"cache": {
 		"enabled": true,
 	},
-	// Static assets served from dist/
-	"routes": [
-		{
-			"pattern": "demo.emdashcms.com",
-			"zone_name": "demo.emdashcms.com",
-			"custom_domain": true,
-		},
-	],
+	// Test site: served on workers.dev only (no custom domain)
+	"workers_dev": true,
 	// D1 Database binding
 	"d1_databases": [
 		{
 			"binding": "DB",
-			"database_name": "emdash_db",
+			"database_name": "emdash-test-db",
 		},
 	],
 	// R2 bucket for media storage
 	"r2_buckets": [
 		{
 			"binding": "MEDIA",
-			"bucket_name": "emdash-media",
+			"bucket_name": "emdash-test-media",
 		},
 	],
 	// Cron triggers drive general maintenance.
@@ -46,12 +40,6 @@
 	"worker_loaders": [
 		{
 			"binding": "LOADER",
-		},
-	],
-	"ai_search_namespaces": [
-		{
-			"binding": "AI_SEARCH",
-			"namespace": "default",
 		},
 	],
 }
